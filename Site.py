@@ -83,15 +83,15 @@ PROJETOS = [
     },
     {
         "titulo": "Simulação de Biorreatores Contínuos",
-        "tags": ["Python", "Excel", "Automação"],
+        "tags": ["Python", "Biotecnologia", "Automação", "Didático"],
         "descricao": "Simulação e análise de biorreatores em regime contínuo para otimização de processos fermentativos.",
         "link": "https://link-para-seu-github.com",
         "imagem": "Imagens/Dia_p_continuo.png"
     },
     {
-        "titulo": "Análise de Sentimentos",
-        "tags": ["NLP", "Streamlit", "API"],
-        "descricao": "Aplicação que consome reviews de clientes e classifica o sentimento (Positivo/Negativo) usando NLP.",
+        "titulo": "Simulação de Biorreatores Batelada",
+        "tags": ["Python", "Biotecnologia", "Automação", "Didático"],
+        "descricao": "Simulação e análise de biorreatores em regime batelada para otimização de processos fermentativos.",
         "link": "#",
         "imagem": "https://via.placeholder.com/400x200?text=NLP+Analysis"
     }
