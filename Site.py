@@ -57,7 +57,7 @@ PROJETOS = [
         "tags": ["Streamlit", "Pandas", "Visualização", "Análise Experimental"],
         "descricao": "Um dashboard interativo que fornece ferramentas para remover ruídos de dados experimentais e calcular dados relacionados ao crescimento microbriano.",
         "link": "https://crescimento-celular-aj-dados.streamlit.app/",
-        "imagem": "Projeto_site\Imagens/Intro_cresc_experimental.png" 
+        "imagem": "Imagens/Intro_cresc_experimental.png" 
     },
     {
         "titulo": "S.Pr.E.M.E.",
