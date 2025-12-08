@@ -1,8 +1,9 @@
 import streamlit as st
 import requests
+import os # <--- Importante para resolver o problema de caminhos
 from io import BytesIO
 from PIL import Image, ImageOps
-        
+
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(
     page_title="Meu Portfólio de Dados",
@@ -15,29 +16,41 @@ st.set_page_config(
 def carregar_e_cortar_imagem(caminho_ou_url, tamanho=(400, 250), borda=0, cor_borda="black"):
     """
     Carrega uma imagem, ajusta para tamanho fixo e opcionalmente adiciona uma borda.
+    Resolve problemas de caminho (Windows vs Linux/Web).
     """
     try:
-        # 1. Abre a imagem dependendo se é URL ou arquivo local
+        # 1. Verifica se é URL
         if caminho_ou_url.startswith("http"):
             response = requests.get(caminho_ou_url)
             img = Image.open(BytesIO(response.content))
         else:
-            # Para arquivos locais
-            img = Image.open(caminho_ou_url)
+            # --- SOLUÇÃO DO PROBLEMA DE CAMINHO ---
+            # Pega o diretório onde ESTE arquivo (portfolio.py) está localizado
+            diretorio_script = os.path.dirname(os.path.abspath(__file__))
+            
+            # Limpa o caminho que veio do dicionário (remove barras extras ou invertidas)
+            # Isso permite que 'Imagens/foto.png' funcione tanto no Windows quanto Linux
+            caminho_limpo = os.path.normpath(caminho_ou_url)
+            
+            # Junta o diretório do script com o caminho da imagem
+            caminho_final = os.path.join(diretorio_script, caminho_limpo)
+            
+            img = Image.open(caminho_final)
         
         # 2. Aplica o corte inteligente (ImageOps.fit)
         img_processada = ImageOps.fit(img, tamanho, Image.Resampling.LANCZOS)
         
-        # 3. Adiciona borda se solicitado (Novo passo)
+        # 3. Adiciona borda se solicitado
         if borda > 0:
             img_processada = ImageOps.expand(img_processada, border=borda, fill=cor_borda)
             
         return img_processada
     except Exception as e:
-        print(f"Erro ao carregar imagem {caminho_ou_url}: {e}")
+        # Dica de debug: imprime o caminho que ele tentou acessar se der erro
+        print(f"Erro ao carregar imagem. Caminho tentado: {caminho_ou_url} | Erro: {e}")
         return None
 
-# --- DADOS (FUTURAMENTE VOCÊ VAI EDITAR AQUI) ---
+# --- DADOS ---
 INFO_PESSOAL = {
     "nome": "Seu Nome Completo",
     "titulo": "Cientista de Dados | Desenvolvedor Python",
@@ -57,6 +70,7 @@ PROJETOS = [
         "tags": ["Streamlit", "Pandas", "Visualização", "Análise Experimental"],
         "descricao": "Um dashboard interativo que fornece ferramentas para remover ruídos de dados experimentais e calcular dados relacionados ao crescimento microbriano.",
         "link": "https://crescimento-celular-aj-dados.streamlit.app/",
+        # Use sempre o caminho relativo à pasta do script (Imagens/...)
         "imagem": "Imagens/Intro_cresc_experimental.png" 
     },
     {
@@ -64,28 +78,28 @@ PROJETOS = [
         "tags": ["TCC", "Python", "EME", "TCC Engenharia"],
         "descricao": "Uma poderosa ferramenta didática que permite realizar o projeto de um evaporador de múltiplos efeitos (até 5 efeitos), com apresentação da teoria e cada etapa de cálculo.",
         "link": "https://evaporador-me.streamlit.app/",
-        "imagem": "Projeto_site\Imagens\EME.png"
+        # Mesmo se no Windows você usava contrabarra, aqui use barra normal ou deixe o código tratar
+        "imagem": "Imagens/EME.png" 
     },
     {
         "titulo": "Simulação de Biorreatores Contínuos",
         "tags": ["Python", "Excel", "Automação"],
         "descricao": "Simulação e análise de biorreatores em regime contínuo para otimização de processos fermentativos.",
         "link": "https://link-para-seu-github.com",
-        "imagem": "Projeto_site/Imagens/Dia_p_continuo.png"
+        "imagem": "Imagens/Dia_p_continuo.png"
     },
     {
-        "titulo": "Análise ",
-        "tags": [],
-        "descricao": "",
+        "titulo": "Análise de Sentimentos",
+        "tags": ["NLP", "Streamlit", "API"],
+        "descricao": "Aplicação que consome reviews de clientes e classifica o sentimento (Positivo/Negativo) usando NLP.",
         "link": "#",
-        "imagem": ""
+        "imagem": "https://via.placeholder.com/400x200?text=NLP+Analysis"
     }
 ]
 
 # --- CSS PERSONALIZADO ---
 st.markdown("""
 <style>
-    /* Estilização para os cards de projetos */
     .project-card {
         background-color: #f0f2f6;
         padding: 20px;
@@ -97,7 +111,6 @@ st.markdown("""
         width: 100%;
         border-radius: 5px;
     }
-    /* Ajuste de fontes */
     h1, h2, h3 {
         font-family: 'Helvetica', sans-serif;
     }
@@ -129,7 +142,7 @@ st.title("🚀 Meus Projetos")
 st.markdown("Bem-vindo ao meu portfólio. Abaixo você encontra as aplicações que desenvolvi.")
 st.markdown("---")
 
-# Lógica para criar o Grid de Projetos (2 por linha)
+# Lógica para criar o Grid de Projetos
 col1, col2 = st.columns(2, border=True)
 
 for index, projeto in enumerate(PROJETOS):
@@ -140,9 +153,6 @@ for index, projeto in enumerate(PROJETOS):
             st.subheader(projeto["titulo"])
             
             # --- PROCESSAMENTO DE IMAGEM COM BORDA ---
-            # Ajustei a altura de volta para 200px para ficar mais proporcional com a borda
-            # borda=4 adiciona 4 pixels de cada lado
-            # cor_borda="#d3d3d3" é um cinza claro elegante
             img_processada = carregar_e_cortar_imagem(
                 projeto["imagem"], 
                 tamanho=(400, 200), 
@@ -162,7 +172,7 @@ for index, projeto in enumerate(PROJETOS):
             
             st.markdown("---")
 
-# --- SEÇÃO EXTRA (OPCIONAL) ---
+# --- SEÇÃO EXTRA ---
 st.header("📈 Minha Jornada")
 with st.expander("Ver linha do tempo profissional"):
     st.write("""
