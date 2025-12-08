@@ -85,7 +85,7 @@ PROJETOS = [
         "titulo": "Simulação de Biorreatores Contínuos",
         "tags": ["Python", "Biotecnologia", "Automação", "Didático"],
         "descricao": "Simulação e análise de biorreatores em regime contínuo para otimização de processos fermentativos.",
-        "link": "https://link-para-seu-github.com",
+        "link": "https://bioreator-continuo.streamlit.app/",
         "imagem": "Imagens/Dia_p_continuo.png"
     },
     {
