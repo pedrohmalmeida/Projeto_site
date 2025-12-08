@@ -74,11 +74,11 @@ PROJETOS = [
         "imagem": "Projeto_site/Imagens/Dia_p_continuo.png"
     },
     {
-        "titulo": "Análise de Sentimentos",
-        "tags": ["NLP", "Streamlit", "API"],
-        "descricao": "Aplicação que consome reviews de clientes e classifica o sentimento (Positivo/Negativo) usando NLP.",
+        "titulo": "Análise ",
+        "tags": [],
+        "descricao": "",
         "link": "#",
-        "imagem": "https://via.placeholder.com/400x200?text=NLP+Analysis"
+        "imagem": ""
     }
 ]
 
