@@ -140,6 +140,7 @@ with st.sidebar:
 
 st.title("🚀 Meus Projetos")
 st.markdown("Bem-vindo ao meu portfólio. Abaixo você encontra as aplicações que desenvolvi.")
+st.warning('PÁGINA EM CONSTRUÇÃO')
 st.markdown("---")
 
 # Lógica para criar o Grid de Projetos
